@@ -1,15 +1,30 @@
+/*
+    This file is part of Sudoku Solver.
+
+    Sudoku Solver is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Sudoku Solver is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Sudoku Solver.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package cz.matfyz.sykora.sudoku;
 
 /**
- * Reprezentace jednoho políčka v hracím plánu. Udržuje si
- * informace o použité hodnotě nebo o hodnotách přípustných
- * pro toto pole.
- * @author Ondra Sýkora [ondrasej@centrum.cz]
+ * Represents a single cell in the game.
+ * 
+ * @author Ondrej Sykora
  */
 public class Field {
 	/**
-	 * Nastaveno na true pokud je pro toto pole určena
-	 * pevná hodnota.
+	 * Set to <code>true</code> if a value is assigned to the cell.
+	 * 
 	 * @see #assignedValue
 	 * @see #clearValue()
 	 * @see #hasFixedValue()
@@ -17,33 +32,36 @@ public class Field {
 	 */
 	private boolean valueFixed;
 	/**
-	 * Hodnta přiřazená tomuto poli. Tato hodnota má smysl
-	 * jen když je <i>hasFixedValue</i> nastaveno na true.
+	 * Contains the value assigned to the cell.
+	 * 
 	 * @see #valueFixed
 	 * @see #getValue()
 	 * @see #setValue(int)
 	 */
 	private int assignedValue;
 	/**
-	 * Bitové pole s jedničkami na pozicích, které reprezentují
-	 * číslice přípustné pro toto pole. Je reprezentováno jako
-	 * jeden int, tím je dáno omezení na maximálně 32 hodnot.
-	 * Tato hodnota má smysl pouze pokud je <i>hasFixedValue</i>
-	 * nastaveno na false.
+	 * A bit mask that contains the list of all values that can be
+	 * assigned to this cell.
+	 * 
 	 * @see #valueFixed
 	 * @see #clearPossibleValue(int)
 	 */
 	private int possibleValues;
 	
-	public final void assign(Field _source) {
-		valueFixed = _source.valueFixed;
-		assignedValue = _source.assignedValue;
-		possibleValues = _source.possibleValues;
+	/**
+	 * Copies all values (assignment, possible values) from the given cell.
+	 * 
+	 * @param source the cell, from which the values are copied.
+	 */
+	public final void assign(Field source) {
+		valueFixed = source.valueFixed;
+		assignedValue = source.assignedValue;
+		possibleValues = source.possibleValues;
 	}
 	
 	/**
-	 * Použitelné pouze pokud je pro toto pole přípustná jediná
-	 * hodnota. Pak najde tuto hodnotu a přiřadí ji tomuto poli.
+	 * If there is only one value that can be assigned to the cell, assigns
+	 * it to the cell.
 	 */
 	public final void assignSinglePossibleValue() {
 		int pos_val = possibleValues;
@@ -56,27 +74,57 @@ public class Field {
 		valueFixed = true;
 	}
 	
-	public final void clearPossibleValue(int _value) {
-		possibleValues &= ~(1 << (_value - 1));
+	/**
+	 * Removes the given value from the list of possible values for this cell.
+	 * 
+	 * @param value the value that is removed from the list.
+	 */
+	public final void clearPossibleValue(int value) {
+		possibleValues &= ~(1 << (value - 1));
 	}
 	
+	/**
+	 * Removes the value assigned to the cell.
+	 */
 	public final void clearValue() {
 		valueFixed = false;
 		possibleValues = (1 << Sudoku.GAME_SIZE) - 1;
 	}
 	
+	/**
+	 * Returns the value assigned to the cell.
+	 * 
+	 * @return the value assigned to the cell.
+	 */
 	public final int getValue() {
 		return assignedValue;
 	}
 	
+	/**
+	 * Checks if a value is assigned to the cell.
+	 * 
+	 * @return <code>true</code> if a value is assigned to the cell; otherwise,
+	 * 			<code>false</code>.
+	 */
 	public final boolean hasFixedValue() {
 		return valueFixed;
 	}
 	
+	/**
+	 * Checks that the list of possible values for this cell is not empty.
+	 * 
+	 * @return <code>true</code> if the list is not empty; otherwise, <code>false</code>.
+	 */
 	public final boolean hasPossibleValues() {
 		return possibleValues != 0;
 	}
 	
+	/**
+	 * Checks that there is a single value that can be assigned to the cell.
+	 * 
+	 * @return <code>true</code> if there is just a single value that can be
+	 * 			assigned to the cell; otherwise, <code>false</code>.
+	 */
 	public final boolean hasSinglePossibleValue() {
 		int pos_val = possibleValues;
 		while(pos_val != 0 && ((pos_val & 1) == 0))
@@ -84,26 +132,41 @@ public class Field {
 		return pos_val == 1;
 	}
 	
-	public final boolean isPossibleValue(int _value) {
-		int mask = 1 << (_value - 1);
+	/**
+	 * Checks whether <code>value</code> can be assigned to the cell.
+	 * 
+	 * @param value the tested value.
+	 * @return <code>true</code> if <code>value</code> can be assigned to the
+	 * 			cell; otherwise, <code>false</code>.
+	 */
+	public final boolean isPossibleValue(int value) {
+		int mask = 1 << (value - 1);
 		return 0 != (possibleValues & mask);
 	}
 	
-	public final void setValue(int _value) {
+	/**
+	 * Assigns the given value to the cell.
+	 * 
+	 * @param value the value assigned to the cell.
+	 */
+	public final void setValue(int value) {
 		valueFixed = true;
-		assignedValue = _value;
+		assignedValue = value;
 	}
 	
+	/**
+	 * Creates a new unassigned cell.
+	 */
 	public Field() {
 		clearValue();
 	}
 	
-	public Field(Field _source) {
-		assign(_source);
-	}
-	
-	public Field(int _value) {
-		valueFixed = true;
-		assignedValue = _value;
+	/**
+	 * Creates a clone of the given cell.
+	 * 
+	 * @param source the cell, from which the values are cloned.
+	 */
+	public Field(Field source) {
+		assign(source);
 	}
 }

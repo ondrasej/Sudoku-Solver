@@ -1,3 +1,19 @@
+/*
+    This file is part of Sudoku Solver.
+
+    Sudoku Solver is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Sudoku Solver is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Sudoku Solver.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package cz.matfyz.sykora.sudoku.test;
 
 import cz.matfyz.sykora.sudoku.*;
@@ -97,7 +113,7 @@ public class SolverTest {
 				"82x5xxxxx" +
 				"xxxxxxxx5" +
 				"x34x9x71x");*/
-		/*test.loadGameState(
+		test.loadGameState(
 				"xxxxxxx1x" +
 				"4xxxxxxxx" +
 				"x2xxxxxxx" +
@@ -107,7 +123,7 @@ public class SolverTest {
 				"3xx4xx2xx" +
 				"x5x1xxxxx" +
 				"xxx8x6xxx"
-				);*/
+				);
 		/*test.loadGameState(
 				"4xxxxx8x5" +
 				"x3xxxxxxx" +

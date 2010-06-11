@@ -1,3 +1,19 @@
+/*
+    This file is part of Sudoku Solver.
+
+    Sudoku Solver is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Sudoku Solver is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Sudoku Solver.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package cz.matfyz.sykora.sudoku.gui;
 
 import java.awt.Dimension;
@@ -55,7 +71,7 @@ public class MainFrame extends JFrame {
 			else {
 				int value = ((Integer)_value).intValue();
 				if((0 >= value) || (Sudoku.GAME_SIZE < value)) {
-					JOptionPane.showMessageDialog(MainFrame.this, "Hodnota neni v platném rozsahu 1 - " + Sudoku.GAME_SIZE,
+					JOptionPane.showMessageDialog(MainFrame.this, "The value is outside the bounds 1 - " + Sudoku.GAME_SIZE,
 												"Sudoku solver", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -85,7 +101,7 @@ public class MainFrame extends JFrame {
 		button_pane.setLayout(new BoxLayout(button_pane, BoxLayout.X_AXIS));
 		button_pane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
-		JButton solve_button = new JButton("Vyřešit");
+		JButton solve_button = new JButton("Solve");
 		solve_button.setActionCommand("solve");
 		solve_button.addActionListener(new ActionListener() {
 											public void actionPerformed(ActionEvent _action) {
@@ -97,7 +113,7 @@ public class MainFrame extends JFrame {
 		button_pane.add(solve_button);
 		button_pane.add(Box.createRigidArea(new Dimension(10, 0)));
 		
-		JButton clear_button = new JButton("Smazat");
+		JButton clear_button = new JButton("Clear");
 		clear_button.setActionCommand("clear");
 		clear_button.addActionListener(new ActionListener() {
 											public void actionPerformed(ActionEvent _action) {
@@ -128,7 +144,7 @@ public class MainFrame extends JFrame {
 		if(sudokuTable.isEditing())
 			return;
 		if(!sudoku.solve()) {
-			JOptionPane.showMessageDialog(this, "Toto zadání nemá žádné řešení", "Sudoku solver", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "There is no solution to this problem", "Sudoku solver", JOptionPane.ERROR_MESSAGE);
 		}
 		sudokuTable.updateUI();
 	}
